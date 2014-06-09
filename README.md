@@ -3,16 +3,21 @@ probabilistic-ranking
 A framework for performing probabilistic ranking on bibliographic data under ambiguity.
 
 To run:
+
 $ python -m src.main
 
 To run a test:
+
 $ python -m test.<test_name>
 
 To run all tests:
+
 $ nosetests test
 
 The format of the training files are:
+
 (ref)<>(author)_(index)<>(coauthor1):(coauthor2):(coauthorI:)*(coauthorN)<>(venue)<>(name)<>(title)<>
+
 where
 - ref is the reference id
 - author is the author id

@@ -63,10 +63,6 @@ def get_authors(references, partitioning):
     blocks_start.append(curr_author)
     curr_cluster = 0
     while curr_cluster in block_part:
-      print 'block %d' % i
-      print 'curr cluster %d' % curr_cluster
-      print block_part
-      print references[i]
       authors[curr_author] = [references[i][j] for j in range(len(block_part))
           if block_part[j] == curr_cluster]
       curr_cluster += 1

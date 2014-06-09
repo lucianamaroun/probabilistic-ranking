@@ -21,7 +21,8 @@ def get_possible_worlds(references, probs, n_alternatives):
 
   Returns:
     A tuples (base_world, alternative_world), where each world is modeled as a
-      list of integer, each coding a different cluster and, then, author.
+      list of list of integers, each coding a different cluster, grouped by
+      blocks.
   """
   probability_matrices = get_probability_matrices(references, probs)
   base_partitioning = []
@@ -35,6 +36,7 @@ def get_possible_worlds(references, probs, n_alternatives):
   for _ in range(n_alternatives):
     alternative_partitioning = []
     for i, pm in enumerate(probability_matrices):
+      distance_matrix = transform_distance_matrix(pm)
       a_part_block = get_alternative_partitioning(distance_matrix, k_block[i])
       alternative_partitioning.append(a_part_block)
     alternative_partitionings.append(alternative_partitioning)

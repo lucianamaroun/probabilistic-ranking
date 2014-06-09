@@ -23,7 +23,7 @@ _LAB_COAUT_DIR = 'coaut_lab'
 _COAUT_DIR = 'coaut'
 _DUMP_DIR = 'dump'
 _PRED_DUMP_FILE = 'logreg.pkl'
-_ITERATIONS = 10
+_ITERATIONS = 1
 
 
 def prob_ranking():

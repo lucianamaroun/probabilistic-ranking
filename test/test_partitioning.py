@@ -20,8 +20,8 @@ class SampleTestCasePartitioning(SampleTestCase):
     references, corpus = pre.get_input(self.testfilename, labeled=True)
     references = [references[0], references[1], references[3]] + \
         [references[2] + references[4] + references[5]]
-    pred = lear.training(references, corpus)
-    probs = lear.testing(references, corpus, pred)
+    pred = lear.train(references, corpus)
+    probs = lear.test(references, corpus, pred)
     self.assertEqual(part.get_probability_matrices(references, probs),[
         [[1.0, 0.89441830645266462, 0.95097107828998639],
          [0.89441830645266462, 1.0, 0.97565300931621723],
@@ -46,8 +46,8 @@ class SampleTestCasePartitioning(SampleTestCase):
     references, corpus = pre.get_input(self.testfilename, labeled=True)
     references = [references[0], references[1], references[3]] + \
         [references[2] + references[4] + references[5]]
-    pred = lear.training(references, corpus)
-    probs = lear.testing(references, corpus, pred)
+    pred = lear.train(references, corpus)
+    probs = lear.test(references, corpus, pred)
     matrices = part.get_probability_matrices(references, probs)
     distances = [part.transform_distance_matrix(matrix) for matrix in matrices]
     self.assertEqual(part.get_base_partitioning(distances[0]), ([0, 0, 0], 1))
@@ -59,7 +59,7 @@ class SampleTestCasePartitioning(SampleTestCase):
       - This is a syntax test. The random matrix should have either 0 or 1
         value.
     """
-    self.assertEqual(part.number_of_clusters([0, 1, 2, 3, 2, 1, -1, -1, 0]), 6)
+    self.assertEqual(part.number_of_clusters([0, 1, 2, 3, 2, 1, -1, -1, 0]), 5)
 
   def test_get_random_matrix(self):
     """ Tests the get_random_matrix function."""

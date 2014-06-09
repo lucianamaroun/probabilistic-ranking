@@ -25,7 +25,7 @@ class SampleTestCaseLearning(SampleTestCase):
     references, corpus = pre.get_input(self.testfilename, labeled=True)
     references = [references[0], references[1], references[3]] + [references[2] 
         + references[4] + references[5]]
-    pred = lear.training(references, corpus)
+    pred = lear.train(references, corpus)
     sim_vectors, classes = mod.model(references, corpus, labeled=True)
     self.assertEqual(pred.predict(sum(sim_vectors, [])).tolist(), classes)
 
@@ -39,10 +39,10 @@ class SampleTestCaseLearning(SampleTestCase):
     references, corpus = pre.get_input(self.testfilename, labeled=True)
     references = [references[0], references[1], references[3]] + [references[2] 
         + references[4] + references[5]]
-    pred = lear.training(references, corpus)
+    pred = lear.train(references, corpus)
     sim_vectors, classes = mod.model(references, corpus, labeled=True)
     self.assertEqual([round(prob) for prob in 
-        sum(lear.testing(references, corpus, pred), [])], classes)
+        sum(lear.test(references, corpus, pred), [])], classes)
 
 
 if __name__ == '__main__':

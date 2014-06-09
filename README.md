@@ -36,3 +36,4 @@ The test file has the same format, but author and index have to be any character
 - python-Levenshtein (https://pypi.python.org/pypi/python-Levenshtein/)
 - munkres (https://pypi.python.org/pypi/munkres/)
 - scikit-learn (https://pypi.python.org/pypi/scikit-learn/0.14.1)
+- numpy (https://pypi.python.org/pypi/numpy)

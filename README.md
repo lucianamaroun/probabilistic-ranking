@@ -1,4 +1,4 @@
-Probabilistic Ranking of researchers
+Probabilistic Ranking of Researchers
 ====================================
 A framework for performing probabilistic ranking on bibliographic data under ambiguity.
 

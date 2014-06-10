@@ -2,6 +2,7 @@
 
 from sklearn.cluster.dbscan_ import dbscan
 import numpy as np
+
 from src.lib.kmedoids import kmedoids
 
 
@@ -102,7 +103,7 @@ def get_base_partitioning(distance_matrix):
     A list of integers from 0 to k - 1, each one representing a block for the
       reference represented by the index.
   """
-  labels = dbscan(distance_matrix, metric='precomputed', eps=0.15, 
+  labels = dbscan(np.array(distance_matrix), metric='precomputed', eps=0.15, 
       min_samples=2)
   next_label = max(labels[1]) + 1
   for i in range(len(labels[1])):

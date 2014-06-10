@@ -3,7 +3,6 @@
 from src import modeling as mod
 from sklearn import linear_model as lm
 
-import itertools as it
 
 def train(references, corpus):
   """ Learns a logistic regression.

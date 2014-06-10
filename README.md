@@ -1,5 +1,5 @@
-probabilistic-ranking
-=====================
+Probabilistic Ranking of Researchers
+====================================
 A framework for performing probabilistic ranking on bibliographic data under ambiguity.
 
 To run:
@@ -30,3 +30,10 @@ where
 If possible, the references should be blocked in groups with the same initial and last name, which have an empty line dividing.
 
 The test file has the same format, but author and index have to be any character, or even empty.
+
+
+*** PACKAGES REQUIRED:
+- python-Levenshtein (https://pypi.python.org/pypi/python-Levenshtein/)
+- munkres (https://pypi.python.org/pypi/munkres/)
+- scikit-learn (https://pypi.python.org/pypi/scikit-learn/0.14.1)
+- numpy (https://pypi.python.org/pypi/numpy)

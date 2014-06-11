@@ -7,10 +7,10 @@ import random
 from src import auxiliary as aux
 
 
-_RAW_DATA_FILE = 'raw_data'
+_RAW_DATA_FILE = 'raw-data'
 _TRAINING_RATIO = 0.25
 _TEST_FILE = 'data/data.dat'
-_TRAINING_FILE = 'data/training.dat'
+_TRAINING_FILE = 'data/training3.dat'
 
 
 def get_test_data(input_dir):

@@ -92,7 +92,7 @@ def transform_distance_matrix(similarity_matrix):
   return distance_matrix
 
 
-def get_base_partitioning(distance_matrix):
+def get_base_partitioning(distance_matrix, eps=0.5, min_samples=2):
   """ Gets the base partitioning from the distance matrix using DBScan
     algorithm.
 
@@ -103,8 +103,8 @@ def get_base_partitioning(distance_matrix):
     A list of integers from 0 to k - 1, each one representing a block for the
       reference represented by the index.
   """
-  labels = dbscan(np.array(distance_matrix), metric='precomputed', eps=0.15, 
-      min_samples=2)
+  labels = dbscan(np.array(distance_matrix), metric='precomputed', eps=eps, 
+      min_samples=min_samples)
   next_label = max(labels[1]) + 1
   for i in range(len(labels[1])):
     if labels[1][i] == -1:

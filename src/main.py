@@ -19,10 +19,6 @@ import src.prob_ranking as prob_rank
 
 _TRAINING_FILE = 'data/training.dat'
 _TEST_FILE = 'data/data.dat'
-_LAB_COAUT_DIR = 'coaut_lab'
-_COAUT_DIR = 'coaut'
-_DUMP_DIR = 'dump'
-_PRED_DUMP_FILE = 'logreg.pkl'
 _ITERATIONS = 10
 
 

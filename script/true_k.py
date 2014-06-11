@@ -1,4 +1,4 @@
-_FILE = 'red_data/red_data.dat'
+_FILE = 'data/training3.dat'
 
 input_file = open(_FILE, 'r')
 entities = set()

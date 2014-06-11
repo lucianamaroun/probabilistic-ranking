@@ -21,11 +21,13 @@ def stability(rankings):
 
 
 if __name__ == '__main__':
-  rankings = [main.prob_ranking() for _ in range(3)]
+  random_iterations = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+  for it in random_iterations:
+    rankings = [main.prob_ranking() for _ in range(10)]
   
-  for index, ranking in enumerate(rankings):
-    outfile = open('ranking' + str(index) + '.dat', 'w')
-    print >> outfile, ranking
-    outfile.close()
+    for index, ranking in enumerate(rankings):
+      outfile = open('ranking' + str(it) + '-' + str(index) + '.dat', 'w')
+      print >> outfile, ranking
+      outfile.close()
 
-  print stability(rankings)
+    print stability(rankings)

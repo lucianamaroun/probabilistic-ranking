@@ -15,12 +15,6 @@ def train(references, corpus):
     A predictor represented by a logistic regression.
   """
   sim_vectors, classes = mod.model(references, corpus, labeled=True)
-  #vecfile = open('vecs.csv', 'w')
-  #for vec, cls in zip(sim_vectors, classes):
-  #  for element in vec:
-  #    print >> vecfile, str(element) + ',',
-  #  print >> vecfile, str(cls)
-  #vecfile.close()
   pred = lm.LogisticRegression()
   pred.fit(sum(sim_vectors, []), classes)
   return pred

@@ -45,4 +45,7 @@ def prob_ranking():
 
 
 if __name__ == '__main__':
+  import sys
+  _ITERATIONS = int(sys.argv[1])
+
   print prob_ranking()

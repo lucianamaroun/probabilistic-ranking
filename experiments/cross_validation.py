@@ -11,32 +11,40 @@ import src.preprocessing as pre
 _FOLDS = 5
 
 def cross_validate():
-  references, corpus = pre.get_input(main._TEST_FILE, labeled=True)
+  references, corpus = pre.get_input('red_data/red_data.dat', labeled=True)
   sim_vectors, labels = mod.model(references, corpus, labeled=True)
   sim_vectors = sum(sim_vectors, [])
   data = []
   for vec in sim_vectors:
-      data.append(list(vec))
+      data.append(vec)
+  print 'finished data'
   data = np.array(data)
   classes = np.array(labels)
   
   folds = []
   fold_sizes = [len(sim_vectors) / _FOLDS for _ in range(_FOLDS)]
+  print fold_sizes
   rest = len(sim_vectors) % _FOLDS
   for i in range(rest):
     fold_sizes[i] += 1
-  available_indexes = range(len(sim_vectors))
+  print fold_sizes
+  indices = range(len(sim_vectors))
+  rd.shuffle(indices)
   for i in range(_FOLDS):
-    folds.append(rd.sample(available_indexes, fold_sizes[i]))
-    for index in folds[-1]:
-      available_indexes.remove(index)
+    folds.append(indices[:fold_sizes[i]])
+    indices = indices[fold_sizes[i]:]
+  print 'end folds'
 
   pred = lm.LogisticRegression()
   precision = []
   recall = []
   f1 = []
   print [len(f) for f in folds]
+  print 'evaluation begins'
+  count = 0
   for fold in folds:
+    print 'fold %d' % count
+    count += 1
     training = [d for i, d in enumerate(sim_vectors) if i not in fold]
     train_target = [c for i, c in enumerate(labels) if i not in fold]
     pred.fit(training, train_target)

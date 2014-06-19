@@ -147,7 +147,7 @@ class RankingSampleTestCase(test_cases.SampleTestCase):
       ranking_b = rank.get_ranking(self.references, alt_partitioning, len)
       rankings_b.append(ranking_b)
     matchings = rank.match_rankings(ranking_a, rankings_b)
-    result = rank.calculate_uncertainties(ranking_a, matchings)
+    result = rank.calculate_uncertainties(matchings)
     for i in range(len(result)):
       self.assertAlmostEqual(result[i], truth[i], 2)
 
@@ -159,7 +159,7 @@ class RankingSampleTestCase(test_cases.SampleTestCase):
       ranking_b = rank.get_ranking(self.references, alt_partitioning, len)
       rankings_b.append(ranking_b)
     matchings = rank.match_rankings(ranking_a, rankings_b)
-    uncertainty = rank.calculate_uncertainties(ranking_a, matchings)
+    uncertainty = rank.calculate_uncertainties(matchings)
     ranking_a.set_uncertainty(uncertainty)
     truth = ranking_a
     result = rank.rank(self.references, self.base_partitioning,

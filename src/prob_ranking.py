@@ -20,7 +20,7 @@ def rank(references, base_partitioning, alternative_partitionings):
   alt_rankings = [get_ranking(references, alt_partitioning, len) for
       alt_partitioning in alternative_partitionings]
   matchings = match_rankings(base_ranking, alt_rankings)
-  uncertainty = calculate_uncertainties(base_ranking, matchings)
+  uncertainty = calculate_uncertainties(matchings)
   base_ranking.set_uncertainty(uncertainty)
   return base_ranking
 
@@ -118,11 +118,10 @@ def match_rankings(ranking_a, rankings_b):
   return mapping
 
 
-def calculate_uncertainties(base_ranking, matchings):
+def calculate_uncertainties(matchings):
   """ Get the uncertainties for a probabilistic ranking.
 
   Args:
-    base_ranking: the base deterministic ranking.
     matchings: a list of lists with positions in alternative worlds for each
       author.
 
@@ -132,11 +131,10 @@ def calculate_uncertainties(base_ranking, matchings):
   uncertainty = []
   n_random_iter = len(matchings[0])
   
-  for position, author in enumerate(base_ranking.authors):
+  for position in range(len(matchings)):
     positions = [position] + matchings[position]
     positions = [pos + 1 for pos in positions]
-    avg_pos = sum(positions) / float(n_random_iter + 1)
-    sd_pos = sqrt(sum([(p - avg_pos) ** 2 for p in positions]) /
+    sd_pos = sqrt(sum([(p - positions[0]) ** 2 for p in positions]) /
         float(n_random_iter + 1))
     uncertainty.append(sd_pos)
   

@@ -20,7 +20,7 @@ def rank(references, base_partitioning, alternative_partitionings):
   alt_rankings = [get_ranking(references, alt_partitioning, len) for
       alt_partitioning in alternative_partitionings]
   matchings = match_rankings(base_ranking, alt_rankings)
-  uncertainty = calculate_uncertainties(matchings)
+  uncertainty = normalize_uncertainties(calculate_uncertainties(matchings))
   base_ranking.set_uncertainty(uncertainty)
   return base_ranking
 
@@ -139,3 +139,18 @@ def calculate_uncertainties(matchings):
     uncertainty.append(sd_pos)
   
   return uncertainty
+
+def normalize_uncertainties(uncertainties):
+  """ Normalizes uncertainties in a discrete range from 0 to 10.
+
+  Args:
+    uncertainties: the real uncertainty values.
+
+  Returns:
+    A list with normalized and discretized uncertainties.
+  """
+  max_unc = len(uncertainties) - 1
+  new_uncertainties = []
+  for unc in uncertainties:
+    new_uncertainties.append(round(unc / (max_unc)))
+  return new_uncertainties

@@ -152,5 +152,5 @@ def normalize_uncertainties(uncertainties):
   max_unc = len(uncertainties) - 1
   new_uncertainties = []
   for unc in uncertainties:
-    new_uncertainties.append(round(unc / (max_unc)))
+    new_uncertainties.append(round(unc/max_unc * 10))
   return new_uncertainties

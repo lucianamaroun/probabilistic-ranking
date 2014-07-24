@@ -27,17 +27,14 @@ def read_rankings(random_iter, repetitions):
 def stability_variance(rankings):
   n_authors = len(rankings[0].ordering)
 
-  for ranking in rankings:
-    ranking.uncertainty = normalize_uncertainty(ranking.uncertainty)
-
   uncertainty = [[] for _ in range(n_authors)]
 
   for ranking in rankings:
     for author in ranking.ordering:
       uncertainty[author].append(ranking.uncertainty[author])
 
-  variances = [sum([(u - sum(uncs)) ** 2 for u in uncs]) / float(len(uncs))
-      for uncs in uncertainty]
+  variances = [sum([(u - author_uncs[0]) ** 2 for u in author_uncs[1:]) / \
+      float(len(uncs) - 1) for author_uncs in uncertainty]
   stability = [- sqrt(var) for var in variances]
 
   return sum(stability) / len(stability)
@@ -47,9 +44,6 @@ def stability_unc_ranking(rankings):
   score = 0
   p_value = 0
   count = 0
-
-  for ranking in rankings:
-    ranking.uncertainty = normalize_uncertainty(ranking.uncertainty)
 
   for index, ranking_a in enumerate(rankings):
     unc_ranking_a = sorted(ranking_a.ordering, key=lambda x:
@@ -64,19 +58,15 @@ def stability_unc_ranking(rankings):
   return score / count, p_value / count
 
 
-def normalize_uncertainty(uncertainty):
-  max_unc = len(uncertainty) / 2 + 1
-  new_uncertainty = []
-  for unc in uncertainty:
-    new_uncertainty.append(round(unc/max_unc * 10))
-  return new_uncertainty
-
 if __name__ == '__main__':
 
     random_iter = [10, 20]
     repetitions = 4
     rankings = read_rankings(random_iter, repetitions)
   
+    print "Variance metric"
     for iter_rankings in rankings:
       print stability_variance(iter_rankings)
+    print "Kendall tau metric"
+    for iter_rankings in rankings:
       print stability_unc_ranking(iter_rankings)

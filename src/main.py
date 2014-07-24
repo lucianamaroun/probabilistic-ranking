@@ -23,7 +23,7 @@ _TEST_FILE = 'data/data.dat'
 _ITERATIONS = 10
 _PKL_PROBS = 'pkl/probs.pkl'
 _PKL_REFS = 'pkl/refs.pkl'
-_TIME_FILE = 'time/ranking%d.dat'
+_TIME_FILE = 'time/time%d.dat'
 
 
 def probabilistic_disambiguation(print_time=False):
@@ -138,7 +138,7 @@ def main(print_time=False):
     A ranking object with the probabilistic ranking.
   """
   references, probs = probabilistic_disambiguation(print_time=print_time)
-  base_world, alt_worlds = sampling_possible_worlds(references, probs,
+  base_world, alt_worlds = possible_worlds_sampling(references, probs,
       print_time=print_time)
   ranking = probabilistic_ranking(references, base_world, alt_worlds,
       print_time=print_time)
@@ -149,9 +149,7 @@ def main(print_time=False):
 if __name__ == '__main__':
   import sys
   print_time=False
-  if (sys.argv[1] == '-t': # display times
-    global _TIME_FILE
-    global _ITERATIONS
+  if (sys.argv[1] == '-t'): # display times
     _ITERATIONS = int(sys.argv[2])
     _TIME_FILE = _TIME_FILE % _ITERATIONS
     print_time = True

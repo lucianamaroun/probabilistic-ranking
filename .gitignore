@@ -1,8 +1,5 @@
 *\.pyc
 *~
-*.txt
-*.csv
-*.dat
 old-src/
 raw-data/
 papers/

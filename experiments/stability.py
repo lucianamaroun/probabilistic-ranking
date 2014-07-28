@@ -1,10 +1,11 @@
-# Stability metric used: inverse of variance for each position -> average
-
 from math import sqrt
 
 import src.main as main
 from src.models import Ranking
-from scipy.stats import kendalltau
+from scipy.stats import kendalltau, spearmanr
+
+
+_RANKING_DIR = 'new_rankings/'
 
 
 def read_rankings(random_iter, repetitions):
@@ -12,7 +13,7 @@ def read_rankings(random_iter, repetitions):
   for r_it in random_iter:
     iter_rankings = []
     for rep in range(repetitions):
-      rank_file = open('ranking%d-%d.dat' % (r_it, rep+1), 'r')
+      rank_file = open(_RANKING_DIR + 'ranking%d-%d.dat' % (r_it, rep+1), 'r')
       unc = []
       for line in rank_file:
         unc.append(float(line.split('(')[1].split(')')[0]))
@@ -33,11 +34,11 @@ def stability_variance(rankings):
     for author in ranking.ordering:
       uncertainty[author].append(ranking.uncertainty[author])
 
-  variances = [sum([(u - author_uncs[0]) ** 2 for u in author_uncs[1:]) / \
-      float(len(uncs) - 1) for author_uncs in uncertainty]
-  stability = [- sqrt(var) for var in variances]
+  variances = [sum([(u - author_uncs[0]) ** 2 for u in author_uncs[1:]]) / \
+      float(len(author_uncs) - 1) for author_uncs in uncertainty]
+  stability = [sqrt(var) for var in variances]
 
-  return sum(stability) / len(stability)
+  return len(stability) / sum(stability)
 
 
 def stability_unc_ranking(rankings):
@@ -58,10 +59,28 @@ def stability_unc_ranking(rankings):
   return score / count, p_value / count
 
 
+def spearman(rankings):
+  score = 0
+  p_value = 0
+  count = 0
+
+  for index, ranking_a in enumerate(rankings):
+    unc_ranking_a = sorted(ranking_a.ordering, key=lambda x:
+        ranking_a.uncertainty[ranking_a.ordering.index(x)])
+    for ranking_b in [r for i, r in enumerate(rankings) if i > index]:
+      unc_ranking_b = sorted(ranking_b.ordering, key=lambda x:
+          ranking_b.uncertainty[ranking_b.ordering.index(x)])
+      curr_score, curr_p = spearmanr(unc_ranking_a, unc_ranking_b)
+      score += curr_score
+      p_value += curr_p
+      count += 1.0
+  return score / count, p_value / count
+
+
 if __name__ == '__main__':
 
-    random_iter = [10, 20]
-    repetitions = 4
+    random_iter = [1, 2, 5, 10, 22, 46, 100, 215, 464, 1000]
+    repetitions = 3
     rankings = read_rankings(random_iter, repetitions)
   
     print "Variance metric"
@@ -70,3 +89,6 @@ if __name__ == '__main__':
     print "Kendall tau metric"
     for iter_rankings in rankings:
       print stability_unc_ranking(iter_rankings)
+    print "Spearman metric"
+    for iter_rankings in rankings:
+      print spearman(iter_rankings)

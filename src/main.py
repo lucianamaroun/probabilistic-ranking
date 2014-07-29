@@ -23,7 +23,8 @@ _TEST_FILE = 'data/data.dat'
 _ITERATIONS = 10
 _PKL_PROBS = 'pkl/probs.pkl'
 _PKL_REFS = 'pkl/refs.pkl'
-_TIME_FILE = 'time/time%d.dat'
+_TIME_FILE = 'time/time_input_size_%d.dat'
+_INPUT_LIMIT = False
 
 
 def probabilistic_disambiguation(print_time=False):
@@ -44,24 +45,24 @@ def probabilistic_disambiguation(print_time=False):
   """
   time_i = time.time()
   
-  if os.path.isfile(_PKL_PROBS) and os.path.isfile(_PKL_REFS):
-    pkl_file = open(_PKL_REFS, 'r')
-    references = pkl.load(pkl_file)
-    pkl_file.close()
-    pkl_file = open(_PKL_PROBS, 'r')
-    probs = pkl.load(pkl_file)
-    pkl_file.close()
-  else:
-    references, corpus = pre.get_input(_TRAINING_FILE, labeled=True)
-    pred = lear.train(references, corpus)
-    references, corpus = pre.get_input(_TEST_FILE)
-    pkl_file = open(_PKL_REFS, 'w')
-    probs = pkl.dump(references, pkl_file)
-    pkl_file.close()
-    probs = lear.test(references, corpus, pred)
-    pkl_file = open(_PKL_PROBS, 'w')
-    probs = pkl.dump(probs, pkl_file)
-    pkl_file.close()
+#  if os.path.isfile(_PKL_PROBS) and os.path.isfile(_PKL_REFS):
+#    pkl_file = open(_PKL_REFS, 'r')
+#    references = pkl.load(pkl_file)
+#    pkl_file.close()
+#    pkl_file = open(_PKL_PROBS, 'r')
+#    probs = pkl.load(pkl_file)
+#    pkl_file.close()
+#  else:
+  references, corpus = pre.get_input(_TRAINING_FILE, labeled=True)
+  pred = lear.train(references, corpus)
+  references, corpus = pre.get_input(_TEST_FILE, limit=_INPUT_LIMIT)
+  pkl_file = open(_PKL_REFS, 'w')
+  probs = pkl.dump(references, pkl_file)
+  pkl_file.close()
+  probs = lear.test(references, corpus, pred)
+  pkl_file = open(_PKL_PROBS, 'w')
+  probs = pkl.dump(probs, pkl_file)
+  pkl_file.close()
   
   time_f = time.time()
   if print_time:
@@ -149,11 +150,15 @@ def main(print_time=False):
 if __name__ == '__main__':
   import sys
   print_time=False
-  if (sys.argv[1] == '-t'): # display times
+  if (sys.argv[1] == '-t'): # display time measures
     _ITERATIONS = int(sys.argv[2])
-    _TIME_FILE = _TIME_FILE % _ITERATIONS
     print_time = True
   else:
     _ITERATIONS = int(sys.argv[1])
+  if len(sys.argv) > 3:
+    _INPUT_LIMIT = int(sys.argv[3])
+    _TIME_FILE = _TIME_FILE % _INPUT_LIMIT
+  else:
+    _TIME_FILE = _TIME_FILE % _ITERATIONS 
 
   print main(print_time=print_time)

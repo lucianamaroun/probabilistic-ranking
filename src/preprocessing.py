@@ -5,7 +5,7 @@
 from models import Reference
 
 
-def get_input(filename, labeled=False):
+def get_input(filename, labeled=False, limit=False):
   """ Gets the input data divided in blocks, as test or training, as well as the
     corpus.
 
@@ -18,12 +18,12 @@ def get_input(filename, labeled=False):
       of reference objects, a list represeting the superset of names and the
       references' ids divided in blocks.
   """
-  references = read_data(filename, labeled=labeled)
+  references = read_data(filename, labeled=labeled, limit=limit)
   corpus = get_corpus(references)
   return references, corpus
 
 
-def read_data(filename, labeled=False):
+def read_data(filename, labeled=False, limit=False):
   """ Reads the input file of references and creates a blocked list of
       reference objects.
 
@@ -44,6 +44,8 @@ def read_data(filename, labeled=False):
       references.append(curr_block)
       curr_block = []
       continue
+    elif limit and count >= limit:
+      break
     attrs = line.split('<>')
     reference = Reference(refid=count,
       name=attrs[4],

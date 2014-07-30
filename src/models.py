@@ -99,6 +99,6 @@ class Ranking(object):
     """ Prints the ranking. """
     string = ''
     for pos, author in enumerate(self.ordering):
-      string += '%d. %s (%.2f)\n' % (pos + 1, self.get_name(self.authors[author]),
+      string += '%d. %s (%d)\n' % (pos + 1, self.get_name(self.authors[author]),
           self.uncertainty[author])
     return string[:-1]

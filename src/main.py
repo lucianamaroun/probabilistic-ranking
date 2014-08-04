@@ -45,24 +45,24 @@ def probabilistic_disambiguation(print_time=False):
   """
   time_i = time.time()
   
-#  if os.path.isfile(_PKL_PROBS) and os.path.isfile(_PKL_REFS):
-#    pkl_file = open(_PKL_REFS, 'r')
-#    references = pkl.load(pkl_file)
-#    pkl_file.close()
-#    pkl_file = open(_PKL_PROBS, 'r')
-#    probs = pkl.load(pkl_file)
-#    pkl_file.close()
-#  else:
-  references, corpus = pre.get_input(_TRAINING_FILE, labeled=True)
-  pred = lear.train(references, corpus)
-  references, corpus = pre.get_input(_TEST_FILE, limit=_INPUT_LIMIT)
-  pkl_file = open(_PKL_REFS, 'w')
-  probs = pkl.dump(references, pkl_file)
-  pkl_file.close()
-  probs = lear.test(references, corpus, pred)
-  pkl_file = open(_PKL_PROBS, 'w')
-  probs = pkl.dump(probs, pkl_file)
-  pkl_file.close()
+  if os.path.isfile(_PKL_PROBS) and os.path.isfile(_PKL_REFS):
+    pkl_file = open(_PKL_REFS, 'r')
+    references = pkl.load(pkl_file)
+    pkl_file.close()
+    pkl_file = open(_PKL_PROBS, 'r')
+    probs = pkl.load(pkl_file)
+    pkl_file.close()
+  else:
+    references, corpus = pre.get_input(_TRAINING_FILE, labeled=True)
+    pred = lear.train(references, corpus)
+    references, corpus = pre.get_input(_TEST_FILE, limit=_INPUT_LIMIT)
+    pkl_file = open(_PKL_REFS, 'w')
+    probs = pkl.dump(references, pkl_file)
+    pkl_file.close()
+    probs = lear.test(references, corpus, pred)
+    pkl_file = open(_PKL_PROBS, 'w')
+    probs = pkl.dump(probs, pkl_file)
+    pkl_file.close()
   
   time_f = time.time()
   if print_time:

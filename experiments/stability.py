@@ -5,7 +5,7 @@ from src.models import Ranking
 from scipy.stats import kendalltau, spearmanr
 
 
-_RANKING_DIR = 'rankings/'
+_RANKING_DIR = 'new_rankings/'
 
 def normalize_uncertainty(uncertainty):
   max_unc = len(uncertainty) - 1
@@ -27,7 +27,7 @@ def read_rankings(r_its, repetitions):
         unc.append(float(line.split('(')[1].split(')')[0]))
       ranking = Ranking()
       ranking.ordering = range(len(unc))
-      ranking.uncertainty = normalize_uncertainty(unc)
+      ranking.uncertainty = unc[:] 
       iter_rankings.append(ranking)
     rankings.append(iter_rankings)
   return rankings
@@ -88,24 +88,24 @@ def stability_spearman(rankings):
 
 if __name__ == '__main__':
 
-  #random_iters = [1, 2, 5, 10, 22, 46, 100, 215, 464, 1000]
-  random_iters = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-  repetitions = 5
+  random_iters = [1, 2, 5, 10, 22, 46, 100, 215, 464, 1000]
+  #random_iters = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+  repetitions = 5 
   rankings = read_rankings(random_iters, repetitions)
  
 
-  print "Standard deviation metric"
-  for iter_rankings in rankings:
-    print stability_sd(iter_rankings)
-  print "Kendall tau metric"
-  for iter_rankings in rankings:
-    print stability_kendall(iter_rankings)[0]
-  print "Spearman metric"
-  for iter_rankings in rankings:
-    print stability_spearman(iter_rankings)[0]
-#  for r_iter in random_iters:
-#    rankings = read_rankings([r_iter], repetitions)
-#    for iter_rankings in rankings:
-#      _, _, scores = stability_spearman(iter_rankings)
-#      for score in scores:
-#        print '%d,%f' % (r_iter, score)
+#  print "Standard deviation metric"
+#  for iter_rankings in rankings:
+#    print stability_sd(iter_rankings)
+#  print "Kendall tau metric"
+#  for iter_rankings in rankings:
+#    print stability_kendall(iter_rankings)[0]
+#  print "Spearman metric"
+#  for index, iter_rankings in enumerate(rankings):
+#    print stability_spearman(iter_rankings)[0]
+  for r_iter in random_iters:
+    rankings = read_rankings([r_iter], repetitions)
+    for iter_rankings in rankings:
+      _, _, scores = stability_spearman(iter_rankings)
+      for score in scores:
+        print '%d,%f' % (r_iter, score)

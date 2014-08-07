@@ -60,9 +60,9 @@ if __name__ == '__main__':
     time_measures_input_size = time_measure_input_size(input_size, repetitions)
     output_file = open('time_iterations.csv', 'w')
     for it, time in time_measures_iterations:
-      print >> output_file, '%d,%d,%d,%d' % (it, time[0], time[1], time[2])
+      print >> output_file, '%d,%f,%f,%f' % (it, time[0], time[1], time[2])
     output_file.close()
     output_file = open('time_input.csv', 'w')
     for it, time in time_measures_input_size:
-      print >> output_file, '%d,%d,%d,%d' % (it, time[0], time[1], time[2])
+      print >> output_file, '%d,%f,%f,%f' % (it, time[0], time[1], time[2])
     output_file.close()

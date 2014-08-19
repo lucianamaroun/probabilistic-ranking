@@ -51,6 +51,18 @@ def time_measure_input_size(sizes, repetitions):
   return time_measures
 
 
+def time_measure_train_size(sizes, repetitions):
+  time_measures = []
+  for size in sizes:
+    time_file = open(_TIME_DIR + 'time_train_size_%d.dat' % size, 'r')
+    for rep in range(repetitions):
+      time_file.readline()
+      disamb_time = float(time_file.readline().strip())
+      time_measures.append((size, disamb_time))
+    time_file.close()
+  return time_measures
+
+
 if __name__ == '__main__':
     random_iter = [1, 2, 5, 10, 22, 46, 100, 215, 464, 1000]
     input_size = [429, 857, 1286, 1715, 2144, 2572, 3001, 3430, 3858, 4287]
@@ -58,6 +70,7 @@ if __name__ == '__main__':
 
     time_measures_iterations = time_measure_iterations(random_iter, repetitions)
     time_measures_input_size = time_measure_input_size(input_size, repetitions)
+    time_measures_train_size = time_measure_train_size(input_size, repetitions)
     output_file = open('time_iterations.csv', 'w')
     for it, time in time_measures_iterations:
       print >> output_file, '%d,%f,%f,%f' % (it, time[0], time[1], time[2])
@@ -65,4 +78,8 @@ if __name__ == '__main__':
     output_file = open('time_input.csv', 'w')
     for it, time in time_measures_input_size:
       print >> output_file, '%d,%f,%f,%f' % (it, time[0], time[1], time[2])
+    output_file.close()
+    output_file = open('time_train.csv', 'w')
+    for it, time in time_measures_train_size:
+      print >> output_file, '%d,%f' % (it, time)
     output_file.close()

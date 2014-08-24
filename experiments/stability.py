@@ -54,20 +54,22 @@ def stability_kendall(rankings):
   p_value = 0
   count = 0
 
-  for index, ranking_a in enumerate(rankings):
+  for index in range(0, len(rankings), 2):
+    ranking_a = rankings[index]
     unc_ranking_a = sorted(ranking_a.ordering, key=lambda x:
         (ranking_a.uncertainty[ranking_a.ordering.index(x)], x))
-    for ranking_b in [r for i, r in enumerate(rankings) if i > index]:
-      unc_ranking_b = sorted(ranking_b.ordering, key=lambda x:
-          (ranking_b.uncertainty[ranking_b.ordering.index(x)], x))
-      curr_score, curr_p = kendalltau(unc_ranking_a, unc_ranking_b)
-      score += curr_score
-      p_value += curr_p
-      count += 1.0
+    #for ranking_b in [r for i, r in enumerate(rankings) if i > index]:
+    ranking_b = rankings[index + 1]
+    unc_ranking_b = sorted(ranking_b.ordering, key=lambda x:
+        (ranking_b.uncertainty[ranking_b.ordering.index(x)], x))
+    curr_score, curr_p = kendalltau(unc_ranking_a, unc_ranking_b)
+    score += curr_score
+    p_value += curr_p
+    count += 1.0
   return score / count, p_value / count
 
 
-def stability_spearman(rankings):
+def stability_spearman_all_pairs(rankings):
   score = 0
   p_value = 0
   count = 0
@@ -86,11 +88,32 @@ def stability_spearman(rankings):
       count += 1.0
   return score / count, p_value / count, scores
 
+
+def stability_spearman(rankings):
+  score = 0
+  p_value = 0
+  count = 0
+  scores = []
+
+  for index in range(0, len(rankings), 2):
+    ranking_a = rankings[index]
+    ranking_b = rankings[index + 1]
+    unc_ranking_a = sorted(ranking_a.ordering, key=lambda x:
+        (ranking_a.uncertainty[ranking_a.ordering.index(x)], x))
+    unc_ranking_b = sorted(ranking_b.ordering, key=lambda x:
+        (ranking_b.uncertainty[ranking_b.ordering.index(x)], x))
+    curr_score, curr_p = spearmanr(unc_ranking_a, unc_ranking_b)
+    score += curr_score
+    scores.append(curr_score)
+    p_value += curr_p
+    count += 1.0
+  return score / count, p_value / count, scores
+
 if __name__ == '__main__':
 
   random_iters = [1, 2, 5, 10, 22, 46, 100, 215, 464, 1000]
   #random_iters = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-  repetitions = 5 
+  repetitions = 14 
   rankings = read_rankings(random_iters, repetitions)
  
 
@@ -104,8 +127,7 @@ if __name__ == '__main__':
 #  for index, iter_rankings in enumerate(rankings):
 #    print stability_spearman(iter_rankings)[0]
   for r_iter in random_iters:
-    rankings = read_rankings([r_iter], repetitions)
-    for iter_rankings in rankings:
-      _, _, scores = stability_spearman(iter_rankings)
-      for score in scores:
-        print '%d,%f' % (r_iter, score)
+    rankings = read_rankings([r_iter], repetitions)[0]
+    _, _, scores = stability_spearman(rankings)
+    for score in scores:
+      print '%d,%f' % (r_iter, score)

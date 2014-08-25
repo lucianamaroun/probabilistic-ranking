@@ -113,7 +113,7 @@ if __name__ == '__main__':
 
   random_iters = [1, 2, 5, 10, 22, 46, 100, 215, 464, 1000]
   #random_iters = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-  repetitions = 14 
+  repetitions = 20 
   rankings = read_rankings(random_iters, repetitions)
  
 

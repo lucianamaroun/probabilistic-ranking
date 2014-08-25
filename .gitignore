@@ -4,3 +4,4 @@ old-src/
 raw-data/
 papers/
 *\.swp
+\.DS_STORE
